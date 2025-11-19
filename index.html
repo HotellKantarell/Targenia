@@ -1,1207 +1,452 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Targenia - Minecraft-butik</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; color: #333; }
-        .navbar { background-color: #28a745; } /* Grön Minecraft-tema */
-        .navbar-brand { color: white !important; font-weight: bold; }
-        .hero { background-color: #28a745; color: white; padding: 50px 0; text-align: center; }
-        .product-card { transition: transform 0.3s; }
-        .product-card:hover { transform: scale(1.05); }
-        .product-img { height: 200px; object-fit: contain; background-color: #e9ecef; padding: 10px; }
-        .btn-primary { background-color: #28a745; border-color: #28a745; }
-        .not-available { opacity: 0.6; pointer-events: none; }
-        .modal-dialog { max-width: 800px; }
-        .modal-img { max-width: 100%; height: auto; }
-        .form-section { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 20px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Targenia - Minecraft Shop</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="#">Targenia</a>
-        </div>
-    </nav>
-    <div class="hero">
-        <div class="container">
-            <h1>Välkommen till Targenia!</h1>
-            <p>Din go-to butik för Minecraft-prylar. Klicka på en produkt för att se detaljer och beställa via formulär.</p>
-        </div>
+<body class="bg-gray-100 font-sans">
+
+<!-- Header -->
+<header class="bg-red-600 text-white shadow-lg fixed w-full z-50">
+    <div class="container mx-auto flex justify-between items-center p-4">
+        <h1 class="text-2xl font-bold">Targenia</h1>
+        <button id="openOrder" class="bg-white text-red-600 font-bold py-2 px-4 rounded-xl hover:bg-gray-100 transition">
+            Köp
+        </button>
     </div>
-    <div class="container my-5">
-        <div class="row">
-            <!-- Produktkort -->
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Firework_Rocket_JE2_BE2.png" class="card-img-top product-img" alt="Adrian’s Fantastic Fireworks">
-                    <div class="card-body">
-                        <h5 class="card-title">Adrian’s Fantastic Fireworks</h5>
-                        <p class="card-text">8D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-adrians-fantastic-fireworks">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Beacon_JE6_BE2.png" class="card-img-top product-img" alt="Beacon">
-                    <div class="card-body">
-                        <h5 class="card-title">Beacon</h5>
-                        <p class="card-text">12D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-beacon">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/White_Concrete.png" class="card-img-top product-img" alt="Concrete">
-                    <div class="card-body">
-                        <h5 class="card-title">Concrete</h5>
-                        <p class="card-text">2D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-concrete">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Book_JE2_BE2.png" class="card-img-top product-img" alt="Book">
-                    <div class="card-body">
-                        <h5 class="card-title">Book</h5>
-                        <p class="card-text">5D/Bok</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-book">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Bone_JE3_BE2.png" class="card-img-top product-img" alt="Bone">
-                    <div class="card-body">
-                        <h5 class="card-title">Bone</h5>
-                        <p class="card-text">1D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-bone">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Dragon%27s_Breath_JE2_BE2.png" class="card-img-top product-img" alt="Dragon’s Breath">
-                    <div class="card-body">
-                        <h5 class="card-title">Dragon’s Breath</h5>
-                        <p class="card-text">8D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-dragons-breath">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_Ender_Chest.png" class="card-img-top product-img" alt="Ender Chest">
-                    <div class="card-body">
-                        <h5 class="card-title">Ender Chest</h5>
-                        <p class="card-text">6D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-ender-chest">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card not-available">
-                    <img src="https://minecraft.wiki/images/Elytra_JE2_BE2.png" class="card-img-top product-img" alt="Elytra">
-                    <div class="card-body">
-                        <h5 class="card-title">Elytra</h5>
-                        <p class="card-text">----Ej Tillgänglig Att Köpa----</p>
-                        <button type="button" class="btn btn-primary disabled">Ej tillgänglig</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_Fishing_Rod.png" class="card-img-top product-img" alt="Fishing Rod">
-                    <div class="card-body">
-                        <h5 class="card-title">Fishing Rod</h5>
-                        <p class="card-text">5D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-fishing-rod">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_White_Dye.png" class="card-img-top product-img" alt="Dye">
-                    <div class="card-body">
-                        <h5 class="card-title">Dye</h5>
-                        <p class="card-text">2D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-dye">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Block_of_Gold_JE6_BE3.png" class="card-img-top product-img" alt="Gold Block">
-                    <div class="card-body">
-                        <h5 class="card-title">Gold Block</h5>
-                        <p class="card-text">14D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-gold-block">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" class="card-img-top product-img" alt="Gold Ingot">
-                    <div class="card-body">
-                        <h5 class="card-title">Gold Ingot</h5>
-                        <p class="card-text">2D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-gold-ingot">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png" class="card-img-top product-img" alt="Iron Ingot">
-                    <div class="card-body">
-                        <h5 class="card-title">Iron Ingot</h5>
-                        <p class="card-text">1D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-iron-ingot">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Block_of_Iron_JE4_BE3.png" class="card-img-top product-img" alt="Iron Block">
-                    <div class="card-body">
-                        <h5 class="card-title">Iron Block</h5>
-                        <p class="card-text">5D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-iron-block">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_Chain.png" class="card-img-top product-img" alt="Chain">
-                    <div class="card-body">
-                        <h5 class="card-title">Chain</h5>
-                        <p class="card-text">2D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-chain">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Lead_JE2_BE2.png" class="card-img-top product-img" alt="Leash">
-                    <div class="card-body">
-                        <h5 class="card-title">Leash</h5>
-                        <p class="card-text">3D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-leash">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Lodestone_JE1_BE1.png" class="card-img-top product-img" alt="Magnetite">
-                    <div class="card-body">
-                        <h5 class="card-title">Magnetite</h5>
-                        <p class="card-text">16D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-magnetite">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Name_Tag_JE2_BE2.png" class="card-img-top product-img" alt="Name Tag">
-                    <div class="card-body">
-                        <h5 class="card-title">Name Tag</h5>
-                        <p class="card-text">1D/10Stycken</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-name-tag">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Nautilus_Shell_JE1_BE2.png" class="card-img-top product-img" alt="Nautilus Shell">
-                    <div class="card-body">
-                        <h5 class="card-title">Nautilus Shell</h5>
-                        <p class="card-text">9D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-nautilus-shell">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Netherite_Ingot_JE1_BE2.png" class="card-img-top product-img" alt="Netherite">
-                    <div class="card-body">
-                        <h5 class="card-title">Netherite</h5>
-                        <p class="card-text">12D/St</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-netherite">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_Bow.png" class="card-img-top product-img" alt="Bow">
-                    <div class="card-body">
-                        <h5 class="card-title">Bow</h5>
-                        <p class="card-text">5D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-bow">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Bell_(item)_JE1_BE1.png" class="card-img-top product-img" alt="Bell">
-                    <div class="card-body">
-                        <h5 class="card-title">Bell</h5>
-                        <p class="card-text">5D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-bell">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_Shulker_Box.png" class="card-img-top product-img" alt="Shulker Box">
-                    <div class="card-body">
-                        <h5 class="card-title">Shulker Box</h5>
-                        <p class="card-text">12D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shulker-box">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Music_Disc_13.png" class="card-img-top product-img" alt="Record">
-                    <div class="card-body">
-                        <h5 class="card-title">Record</h5>
-                        <p class="card-text">8D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-record">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Turtle_Egg_(item)_JE2_BE2.png" class="card-img-top product-img" alt="Turtle Egg">
-                    <div class="card-body">
-                        <h5 class="card-title">Turtle Egg</h5>
-                        <p class="card-text">6D/Ägg</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-turtle-egg">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Cobweb_JE5.png" class="card-img-top product-img" alt="Cobweb">
-                    <div class="card-body">
-                        <h5 class="card-title">Cobweb</h5>
-                        <p class="card-text">1D/8Stycken</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-cobweb">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_Spyglass.png" class="card-img-top product-img" alt="Spyglass">
-                    <div class="card-body">
-                        <h5 class="card-title">Spyglass</h5>
-                        <p class="card-text">3D/Styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-spyglass">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Oak_Log.png" class="card-img-top product-img" alt="Logs">
-                    <div class="card-body">
-                        <h5 class="card-title">Logs</h5>
-                        <p class="card-text">2D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-logs">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Totem_of_Undying_JE2_BE2.png" class="card-img-top product-img" alt="Totem of Undying">
-                    <div class="card-body">
-                        <h5 class="card-title">Totem of Undying</h5>
-                        <p class="card-text">2D/styck</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-totem-of-undying">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/String_JE2_BE2.png" class="card-img-top product-img" alt="String">
-                    <div class="card-body">
-                        <h5 class="card-title">String</h5>
-                        <p class="card-text">1D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-string">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Oak_Planks.png" class="card-img-top product-img" alt="Wood">
-                    <div class="card-body">
-                        <h5 class="card-title">Wood</h5>
-                        <p class="card-text">2D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-wood">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Invicon_White_Wool.png" class="card-img-top product-img" alt="Wool">
-                    <div class="card-body">
-                        <h5 class="card-title">Wool</h5>
-                        <p class="card-text">1D/Stack</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-wool">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card product-card">
-                    <img src="https://minecraft.wiki/images/Block_of_Emerald_JE4_BE3.png" class="card-img-top product-img" alt="Emerald Block">
-                    <div class="card-body">
-                        <h5 class="card-title">Emerald Block</h5>
-                        <p class="card-text">4D/16St</p>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-emerald-block">Visa & Beställ</button>
-                    </div>
-                </div>
-            </div>
+</header>
+
+<!-- Main Content -->
+<main class="pt-28 container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    <!-- 1. Adrians Fantastiska Fireworks -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Firework_Rocket.png" alt="Adrians Fantastiska Fireworks" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Adrians Fantastiska Fireworks</h2>
+            <p class="text-gray-600 mb-4">20D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Adrians Fantastiska Fireworks" data-price="20D/Styck">Köp</button>
         </div>
     </div>
 
-    <!-- Modals för varje produkt -->
-    <div class="modal fade" id="modal-adrians-fantastic-fireworks" tabindex="-1" aria-labelledby="modal-adrians-fantastic-fireworksLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-adrians-fantastic-fireworksLabel">Adrian’s Fantastic Fireworks - 8D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Firework_Rocket_JE2_BE2.png" class="modal-img" alt="Adrian’s Fantastic Fireworks">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En raket är ett föremål i Minecraft som ger en hastighetsboost när den används vid flygning med elytra och kan avfyras som ett projektil för hand, med armborst eller dysa, med anpassningsbara explosions effekter som läggs till genom att tillverka den med fyrverkeristjärnor och krut för ökad flygtid.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 2. Beacon -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Minecraft_Beacon.png" alt="Beacon" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Beacon</h2>
+            <p class="text-gray-600 mb-4">32D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Beacon" data-price="32D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-beacon" tabindex="-1" aria-labelledby="modal-beaconLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-beaconLabel">Beacon - 12D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Beacon_JE6_BE2.png" class="modal-img" alt="Beacon">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En beacon är ett block som projicerar en stråle uppåt och kan ge fördelaktiga status effekter till spelare inom en radie när den placeras på en pyramidbas gjord av järn, guld, diamant, smaragd eller netheritblock, med effektområdet beroende på pyramidens storlek, från 3x3 till 9x9 block.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 3. Bok -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Minecraft_Book.png" alt="Bok" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Bok</h2>
+            <p class="text-gray-600 mb-4">13D/Bok</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Bok" data-price="13D/Bok">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-concrete" tabindex="-1" aria-labelledby="modal-concreteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-concreteLabel">Concrete - 2D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/White_Concrete.png" class="modal-img" alt="Concrete">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Betong är ett block som skapas när betongpulver kommer i kontakt med vatten, finns i sexton färger och är användbart för dekoration tack vare sina ljusa och solida färger. Den har en hårdhet som är något högre än sten men lägre explosionsresistens, och kan placeras under notblock för att producera ett "bastrumma"-ljud.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 4. Bone -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Minecraft_Bone.png" alt="Bone" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Bone</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Bone" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-book" tabindex="-1" aria-labelledby="modal-bookLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-bookLabel">Book - 5D/Bok</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Book_JE2_BE2.png" class="modal-img" alt="Book">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Böcker är föremål som används för att skapa förtrollningsbord och bokhyllor, som är nödvändiga för förtrollning, och kan också förtrollas själva för att lagra och applicera förtrollningar eller skapas till en bok och fjäderpenna för att skriva. De kan erhållas genom att skapa med papper och läder, som byte från olika strukturer, eller genom att avförtrolla förtrollade böcker.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 5. Dragons Breath -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Minecraft_Dragon%27s_Breath.png" alt="Dragons Breath" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Dragons Breath</h2>
+            <p class="text-gray-600 mb-4">20D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Dragons Breath" data-price="20D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-bone" tabindex="-1" aria-labelledby="modal-boneLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-boneLabel">Bone - 1D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Bone_JE3_BE2.png" class="modal-img" alt="Bone">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett ben är ett föremål som huvudsakligen erhålls från skelett och liknande mobbar, och det kan användas för att tillverka benmjöl eller tämja vilda vargar.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 6. Ender Kista -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Minecraft_Ender_Chest.png" alt="Ender Kista" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Ender Kista</h2>
+            <p class="text-gray-600 mb-4">15D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Ender Kista" data-price="15D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-dragons-breath" tabindex="-1" aria-labelledby="modal-dragons-breathLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-dragons-breathLabel">Dragon’s Breath - 8D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Dragon%27s_Breath_JE2_BE2.png" class="modal-img" alt="Dragon’s Breath">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Drakens andedräkt är ett bryggningsföremål som används för att uppgradera stänkpotioner till varaktiga potioner, som skapar bestående områdeseffektmoln, och det kan erhållas genom att använda tomma glasflaskor på enderdrakens andedräktsattack eller de lila effektmolnen orsakade av drakeldkulor. Det är förnybart, stapelbart upp till 64 och har en ovanlig sällsynthet.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 7. Guld Block -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Minecraft_Block_of_Gold.png" alt="Guld Block" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Guld Block</h2>
+            <p class="text-gray-600 mb-4">37D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Guld Block" data-price="37D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-ender-chest" tabindex="-1" aria-labelledby="modal-ender-chestLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-ender-chestLabel">Ender Chest - 6D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_Ender_Chest.png" class="modal-img" alt="Ender Chest">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ender-bröst är en typ av bröst vars innehåll är exklusivt för varje spelare och kan nås var som helst i alla dimensioner, och de kan lagra föremål säkert även om spelaren dör. De tillverkas av obsidian och ett öga av ender, släpper 8 obsidian när de bryts utan Silk Touch, och genereras naturligt i skattkammare i End-städer.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 8. Guldtacka -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Minecraft_Gold_Ingot.png" alt="Guldtacka" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Guldtacka</h2>
+            <p class="text-gray-600 mb-4">5D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Guldtacka" data-price="5D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-fishing-rod" tabindex="-1" aria-labelledby="modal-fishing-rodLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-fishing-rodLabel">Fishing Rod - 5D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_Fishing_Rod.png" class="modal-img" alt="Fishing Rod">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett fiskespö är ett verktyg som används för att fiska i vatten eller för att haka och dra mobs, föremål och andra enheter mot användaren, med olika hållbarhet och förtrollningsbarhet beroende på utgåva. Det kan erhållas genom att tillverka, fiska, mobbbyten, genererat byte, handel eller genom att använda upp en morot eller en förvriden svamp på en pinne.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 9. Järn -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Minecraft_Iron_Ingot.png" alt="Järn" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Järn</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Järn" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-dye" tabindex="-1" aria-labelledby="modal-dyeLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-dyeLabel">Dye - 2D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_White_Dye.png" class="modal-img" alt="Dye">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Färger är en uppsättning av sexton föremål som används för att ändra färgen på olika föremål och block i Minecraft, såsom ull, mattor, terrakotta och läderpansar, och kan tillverkas av blommor, andra föremål eller erhållas genom handel. De används också för att färga vatten i en kittel i Bedrock Edition och kan appliceras på mobbar som får och skyltar för att ändra deras färg.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 10. Järn Block -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Minecraft_Block_of_Iron.png" alt="Järn Block" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Järn Block</h2>
+            <p class="text-gray-600 mb-4">13D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Järn Block" data-price="13D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-gold-block" tabindex="-1" aria-labelledby="modal-gold-blockLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-gold-blockLabel">Gold Block - 14D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Block_of_Gold_JE6_BE3.png" class="modal-img" alt="Gold Block">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En guldbock är ett ädelmetallblock motsvarande nio guldingotar, används för kompakt lagring och kan endast brytas med en järnspade eller bättre. Den genereras naturligt i oceanmonument, förstörda portaler och bastionrester, och kan användas för att driva fyrar och producera klockljud under notblock.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 11. Kedja -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Minecraft_Chain.png" alt="Kedja" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Kedja</h2>
+            <p class="text-gray-600 mb-4">5D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Kedja" data-price="5D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-gold-ingot" tabindex="-1" aria-labelledby="modal-gold-ingotLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-gold-ingotLabel">Gold Ingot - 2D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" class="modal-img" alt="Gold Ingot">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett guldingot är ett metallingot som används för att skapa olika föremål och som valuta för byteshandel med piglins, och erhålls huvudsakligen genom att smälta råguld, guldmalm eller netherguldmalm. Det är förnybart, kan staplas upp till 64, och finns oftast i badlandsbiomer.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 12. Koppel -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Minecraft_Lead.png" alt="Koppel" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Koppel</h2>
+            <p class="text-gray-600 mb-4">8D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Koppel" data-price="8D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-iron-ingot" tabindex="-1" aria-labelledby="modal-iron-ingotLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-iron-ingotLabel">Iron Ingot - 1D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png" class="modal-img" alt="Iron Ingot">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett järnstycke är ett vanligt metallstycke som kan smältas från råjärn och används för att skapa många föremål och verktyg i Minecraft.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 13. Nametag -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Minecraft_Name_Tag.png" alt="Nametag" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Nametag</h2>
+            <p class="text-gray-600 mb-4">3D/10St</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Nametag" data-price="3D/10St">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-iron-block" tabindex="-1" aria-labelledby="modal-iron-blockLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-iron-blockLabel">Iron Block - 5D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Block_of_Iron_JE4_BE3.png" class="modal-img" alt="Iron Block">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En järnblock är ett värdefullt metallblock motsvarande nio järnstänger, används för förvaring och hantverk, och kan endast brytas med en stenhacka eller bättre. Det används också för att driva fyrar, skapa järngolems och tillverka städ, och kan hittas i strukturer som bastionrester och provkammare.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 14. Nautilus skal -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/88/Minecraft_Nautilus_Shell.png" alt="Nautilus skal" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Nautilus skal</h2>
+            <p class="text-gray-600 mb-4">23D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Nautilus skal" data-price="23D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-chain" tabindex="-1" aria-labelledby="modal-chainLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-chainLabel">Chain - 2D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_Chain.png" class="modal-img" alt="Chain">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Järnkedjor är metalliska dekorationsblock som kan brytas med en hacka och används för att hänga upp föremål som klockor och lyktor, och kan existera fritt i luften och kopplas horisontellt eller vertikalt. De genereras naturligt i strukturer som bastionrester, gruvschakt och provkammare, och kan tillverkas med järnklumpar och järnblock.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 15. Netherite -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Minecraft_Netherite_Ingot.png" alt="Netherite" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Netherite</h2>
+            <p class="text-gray-600 mb-4">32D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Netherite" data-price="32D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-leash" tabindex="-1" aria-labelledby="modal-leashLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-leashLabel">Leash - 3D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Lead_JE2_BE2.png" class="modal-img" alt="Leash">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Tjudrar är användbara föremål som används för att leda och binda djur, golems, båtar och andra mobs, och de kan fästas vid staket eller andra enheter medan man smyger, och tas bort genom att klippa. De kan erhållas från mobbbyten, genererat byte i strukturer som antika städer och skogsvillor, eller tillverkas med snöre.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 16. Pilbåge -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Minecraft_Bow.png" alt="Pilbåge" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Pilbåge</h2>
+            <p class="text-gray-600 mb-4">13D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Pilbåge" data-price="13D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-magnetite" tabindex="-1" aria-labelledby="modal-magnetiteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-magnetiteLabel">Magnetite - 16D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Lodestone_JE1_BE1.png" class="modal-img" alt="Magnetite">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En lodestone är ett block som kan användas för att ändra kompasser så att de pekar mot det, och det kräver en hacka för att brytas, och släpper sig själv när det bryts med rätt verktyg. Det kan tillverkas med huggna stenhällar och en järnbarre, och finns i kistor inom bastionrester och förstörda portaler.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 17. Bell -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Minecraft_Bell.png" alt="Bell" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Bell</h2>
+            <p class="text-gray-600 mb-4">13D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Bell" data-price="13D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-name-tag" tabindex="-1" aria-labelledby="modal-name-tagLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-name-tagLabel">Name Tag - 1D/10Stycken</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Name_Tag_JE2_BE2.png" class="modal-img" alt="Name Tag">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En namnskylt är ett föremål som används för att ge namn till mobbar i världen, vilket förhindrar att de försvinner naturligt, och måste döpas om med ett städ innan användning. Namngivna mobbar visar sitt namn över huvudet och kan döpas om flera gånger, med effekter som varierar beroende på mobbtyp.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 18. Respawn Anchor -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Minecraft_Respawn_Anchor.png" alt="Respawn Anchor" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Respawn Anchor</h2>
+            <p class="text-gray-600 mb-4">65D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Respawn Anchor" data-price="65D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-nautilus-shell" tabindex="-1" aria-labelledby="modal-nautilus-shellLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-nautilus-shellLabel">Nautilus Shell - 9D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Nautilus_Shell_JE1_BE2.png" class="modal-img" alt="Nautilus Shell">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett nautilusskal är ett ovanligt, förnybart föremål som används för att skapa ledningar, och det kan erhållas från drunknade mobbar, fiske eller handel med kringvandrande handlare. I Bedrock Edition kan det hållas i den andra handen och användes tidigare i en funktion där drunknade kunde byta det mot en treudd, men detta tas bort.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 19. Shulkerbox -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/79/Minecraft_Shulker_Box.png" alt="Shulkerbox" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Shulkerbox</h2>
+            <p class="text-gray-600 mb-4">32D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Shulkerbox" data-price="32D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-netherite" tabindex="-1" aria-labelledby="modal-netheriteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-netheriteLabel">Netherite - 12D/St</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Netherite_Ingot_JE1_BE2.png" class="modal-img" alt="Netherite">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En netheritbarre är ett föremål som tillverkas av fyra netheritrester och fyra guldbarr, eller som hittas i bytestunnor i bastionrester, och används huvudsakligen för att uppgradera diamantutrustning, och är immun mot eld och lava.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 20. Skölpaddsägg -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Minecraft_Turtle_Egg.png" alt="Skölpaddsägg" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Skölpaddsägg</h2>
+            <p class="text-gray-600 mb-4">15D/Ägg</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Skölpaddsägg" data-price="15D/Ägg">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-bow" tabindex="-1" aria-labelledby="modal-bowLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-bowLabel">Bow - 5D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_Bow.png" class="modal-img" alt="Bow">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En båge är ett distansvapen i Minecraft som skjuter pilar, där skada och räckvidd beror på hur länge användarknappen hålls innan den släpps. Den kan tillverkas med en pinne och snöre, erhållas från mobbar som skelett, eller hittas som byte i strukturer, och kan förtrollas för olika effekter.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 21. Spindelnät -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Minecraft_Cobweb.png" alt="Spindelnät" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Spindelnät</h2>
+            <p class="text-gray-600 mb-4">3D/8St</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Spindelnät" data-price="3D/8St">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-bell" tabindex="-1" aria-labelledby="modal-bellLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-bellLabel">Bell - 5D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Bell_(item)_JE1_BE1.png" class="modal-img" alt="Bell">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En klocka är en genomskinlig, animerad blockenhet i Minecraft som producerar ett ljud när den används och kan inte skapas, och genereras naturligt i alla byvarianter vanligtvis nära centrum. Den kan ringas av spelare, redstone-signaler, projektiler eller genom att släppa föremål på den, och används av bybor för att hävda som en samlingsplats och under räder.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 22. Spyglass -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Minecraft_Spyglass.png" alt="Spyglass" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Spyglass</h2>
+            <p class="text-gray-600 mb-4">8D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Spyglass" data-price="8D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-shulker-box" tabindex="-1" aria-labelledby="modal-shulker-boxLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-shulker-boxLabel">Shulker Box - 12D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_Shulker_Box.png" class="modal-img" alt="Shulker Box">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En shulker box är ett färgbara block som lagrar föremål och behåller sitt innehåll i föremålsform när det bryts, till skillnad från andra förvaringsblock, och kan tillverkas med ett shulker skal och en kista. Färgade shulker boxar är varianter av shulker boxar som är färgade med olika färger.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 23. Smarald Block -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Minecraft_Block_of_Emerald.png" alt="Smarald Block" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Smarald Block</h2>
+            <p class="text-gray-600 mb-4">10D/16St</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Smarald Block" data-price="10D/16St">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-record" tabindex="-1" aria-labelledby="modal-recordLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-recordLabel">Record - 8D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Music_Disc_13.png" class="modal-img" alt="Record">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Musikskivor är en uppsättning av 21 föremål i Minecraft som kan spelas i jukeboxar, där varje skiva har unika spår komponerade av olika artister, och de kan erhållas genom mobbbyten, genererade strukturer eller hantverk.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 24. Totem of Undying -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Minecraft_Totem_of_Undying.png" alt="Totem of Undying" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Totem of Undying</h2>
+            <p class="text-gray-600 mb-4">5D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Totem of Undying" data-price="5D/Styck">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-turtle-egg" tabindex="-1" aria-labelledby="modal-turtle-eggLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-turtle-eggLabel">Turtle Egg - 6D/Ägg</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Turtle_Egg_(item)_JE2_BE2.png" class="modal-img" alt="Turtle Egg">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett sköldpäddeägg är ett block som innehåller 1–4 ägg som vardera kläcks till en bebissköldpadda, och det kan erhållas genom att para sköldpaddor med sjögräs eller genom att bryta det med ett Silk Touch-verktyg. Sköldpäddeägg kan trampas på av levande varelser och kläcks på sand, röd sand eller misstänkt sand, spricker över tid och kläcks efter att ha spruckit tre gånger, snabbare i slutet av natten.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 25. Tråd -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Minecraft_String.png" alt="Tråd" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Tråd</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Tråd" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-cobweb" tabindex="-1" aria-labelledby="modal-cobwebLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-cobwebLabel">Cobweb - 1D/8Stycken</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Cobweb_JE5.png" class="modal-img" alt="Cobweb">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En spindelväv är ett block som saktar ner rörelser hos enheter och kan erhållas med saxar eller ett svärd med Silk Touch, och släpper sträng om det bryts med ett icke-Silk Touch svärd eller andra metoder. Den genereras naturligt i gruvschakt, fästningsbibliotek, igloos källare, övergivna byar, skogsvillors spindelspawnerrum och provkammare.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 26. Obsidian -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Minecraft_Obsidian.png" alt="Obsidian" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Obsidian</h2>
+            <p class="text-gray-600 mb-4">20D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Obsidian" data-price="20D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-spyglass" tabindex="-1" aria-labelledby="modal-spyglassLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-spyglassLabel">Spyglass - 3D/Styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_Spyglass.png" class="modal-img" alt="Spyglass">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ett spygglas är ett verktygsföremål i Minecraft som används för att zooma in på avlägsna objekt, och ändrar synfältet till 1/10 av det inställda synfältet, och det kan tillverkas med en ametistskärva och kopparplattor. Det applicerar en fyrkantig vinjett när det används och saktar ner spelaren medan den kontinuerligt tittar genom det i 1 minut, varefter gränssnittet stängs automatiskt.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 27. Redstone Block -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Minecraft_Block_of_Redstone.png" alt="Redstone Block" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Redstone Block</h2>
+            <p class="text-gray-600 mb-4">15D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Redstone Block" data-price="15D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-logs" tabindex="-1" aria-labelledby="modal-logsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-logsLabel">Logs - 2D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Oak_Log.png" class="modal-img" alt="Logs">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En stock eller stam är ett naturligt förekommande block som finns i träd eller stora svampar, huvudsakligen används som byggblock och för att skapa plankor, en mångsidig ingrediens för hantverk, med nio typer av stockar och två typer av stammar tillgängliga.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 28. Lapis Lazuli Block -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Minecraft_Block_of_Lapis_Lazuli.png" alt="Lapis Lazuli Block" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Lapis Lazuli Block</h2>
+            <p class="text-gray-600 mb-4">13D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Lapis Lazuli Block" data-price="13D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-totem-of-undying" tabindex="-1" aria-labelledby="modal-totem-of-undyingLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-totem-of-undyingLabel">Totem of Undying - 2D/styck</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Totem_of_Undying_JE2_BE2.png" class="modal-img" alt="Totem of Undying">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Totemen av odödlighet är ett ovanligt, ostaplbart föremål som förhindrar spelare eller mobbar från att dö vid dödlig skada, tappas av evokörer i skogsvillor och räder, och ger effekter som Absorption, Regeneration och Eldmotstånd när den aktiveras.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 29. Stone -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Minecraft_Stone.png" alt="Stone" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Stone</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Stone" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-string" tabindex="-1" aria-labelledby="modal-stringLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-stringLabel">String - 1D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/String_JE2_BE2.png" class="modal-img" alt="String">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Sträng är ett föremål som används i hantverksrecept som bågar, fiskespön och koppel, och när det placeras som ett block blir det en snara, som kan kombineras med snarhak för att bilda en snarakrets. Det kan erhållas genom att bryta snara, från mobbbyten som spindlar och katter, naturlig generation i strukturer som djungelpyramider, fiske, byteshandel med piglins och som gåvor från katter.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 30. Dirt -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Minecraft_Dirt.png" alt="Dirt" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Dirt</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Dirt" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-wood" tabindex="-1" aria-labelledby="modal-woodLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-woodLabel">Wood - 2D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Oak_Planks.png" class="modal-img" alt="Wood">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ekplankor är vanliga block som används som byggmaterial och i hantverksrecept, vanligtvis ett av de första föremålen som tillverkas i överlevnadsläge, och tillverkas av eklövträd.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 31. Sand -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Minecraft_Sand.png" alt="Sand" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Sand</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Sand" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-wool" tabindex="-1" aria-labelledby="modal-woolLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-woolLabel">Wool - 1D/Stack</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Invicon_White_Wool.png" class="modal-img" alt="Wool">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>Ull är ett block som erhålls från får och kan färgas i någon av de sexton olika färgerna och användas som ett hantverksmaterial för att blockera vibrationer.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 32. Gräs Block -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Minecraft_Grass_Block.png" alt="Gräs Block" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Gräs Block</h2>
+            <p class="text-gray-600 mb-4">3D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Gräs Block" data-price="3D/Stack">Köp</button>
         </div>
     </div>
 
-    <div class="modal fade" id="modal-emerald-block" tabindex="-1" aria-labelledby="modal-emerald-blockLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-emerald-blockLabel">Emerald Block - 4D/16St</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="https://minecraft.wiki/images/Block_of_Emerald_JE4_BE3.png" class="modal-img" alt="Emerald Block">
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Beskrivning</h6>
-                            <p>En smaragdblock är ett mineralblock motsvarande nio smaragder, används för förvaring eller dekoration, och kan tillverkas från smaragder eller erhållas från provkammare och olycksbådande valv. Det kan också driva fyrar och producera ett "bit"-ljud när det placeras under ett notblock.</p>
-                        </div>
-                    </div>
-                    <div class="form-section">
-                        <h6>Beställ nu</h6>
-                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfbyByYUQ-SzCP41zEok_I1NkVi-i8yTOYdyZkiL2kDGTT7jQ/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Läser in …</iframe>
-                    </div>
-                </div>
-            </div>
+    <!-- 33. End Stone -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Minecraft_End_Stone.png" alt="End Stone" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">End Stone</h2>
+            <p class="text-gray-600 mb-4">18D/Stack</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="End Stone" data-price="18D/Stack">Köp</button>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 34. Conduit -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Minecraft_Conduit.png" alt="Conduit" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Conduit</h2>
+            <p class="text-gray-600 mb-4">64D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Conduit" data-price="64D/Styck">Köp</button>
+        </div>
+    </div>
+
+    <!-- 35. Heart of the Sea (bonus, du hade med den också) -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transform transition duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Minecraft_Heart_of_the_Sea.png" alt="Heart of the Sea" class="w-full h-40 object-cover">
+        <div class="p-4">
+            <h2 class="text-lg font-bold mb-2">Heart of the Sea</h2>
+            <p class="text-gray-600 mb-4">64D/Styck</p>
+            <button class="buyBtn w-full bg-red-600 text-white py-2 rounded-xl hover:bg-red-700 transition" data-product="Heart of the Sea" data-price="64D/Styck">Köp</button>
+        </div>
+    </div>
+
+</main>
+
+<!-- Order Popup -->
+<div id="orderPopup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-lg w-full relative">
+        <button id="closePopup" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 font-bold text-2xl">&times;</button>
+        <h2 class="text-2xl font-bold mb-6 text-center">Beställ Produkt</h2>
+        <form action="https://formspree.io/f/xwprkznr" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Produkt(er)*</label>
+                <input type="text" name="Produkter" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Namn*</label>
+                <input type="text" name="customer_name" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Adress*</label>
+                <textarea name="address" rows="3" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 resize-none"></textarea>
+            </div>
+            <!-- Nya fält -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Vad vill du ha levererat till?*</label>
+                <select name="delivery_option" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
+                    <option value="">Välj alternativ</option>
+                    <option value="hem">Hem</option>
+                    <option value="targenia">Låda hos Targenia</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Vänligen knappa in ditt Targenia-konto*</label>
+                <input type="text" name="targenia_account" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
+            </div>
+<div>
+                <label class="block text-gray-700 font-medium mb-2">Hur många stacks av varje item*</label>
+                <input type="text" name="Stacks" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
+            </div>
+<div>
+                <label class="block text-gray-700 font-medium mb-2">Här kan du skriva in extra produkter som inte finns i vårat sortument *Notera dock att priset inte står färdigt och kan bli vad som helst* *</label>
+                <input type="text" name="Extra Produkter" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
+            </div>
+            <p class="text-gray-600 text-sm mt-2">
+                Genom hemleverans så lägger vi på 15% av den totala summan på priset. För låda hos Targenia så lägger vi på 10% av den totala summan på priset.
+            </p>
+            <button type="submit" class="w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">
+                Skicka Beställning
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+const orderPopup = document.getElementById('orderPopup');
+const openOrder = document.getElementById('openOrder');
+const closePopup = document.getElementById('closePopup');
+const buyButtons = document.querySelectorAll('.buyBtn');
+const popupProduct = document.getElementById('popupProduct');
+const popupPrice = document.getElementById('popupPrice');
+
+openOrder.addEventListener('click', () => {
+    orderPopup.classList.remove('hidden');
+    popupProduct.value = '';
+    popupPrice.value = '';
+});
+
+closePopup.addEventListener('click', () => orderPopup.classList.add('hidden'));
+
+buyButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        popupProduct.value = btn.dataset.product;
+        popupPrice.value = btn.dataset.price;
+        orderPopup.classList.remove('hidden');
+    });
+});
+</script>
+
 </body>
 </html>
