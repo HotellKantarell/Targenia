@@ -374,52 +374,18 @@
 
 <!-- Order Popup -->
 <div id="orderPopup" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
-    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-lg w-full relative">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-3xl w-full relative">
         <button id="closePopup" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 font-bold text-2xl">&times;</button>
         <h2 class="text-2xl font-bold mb-6 text-center">Beställ Produkt</h2>
-        <form action="https://formspree.io/f/xwprkznr" method="POST" class="space-y-4">
-            <div>
-                <label class="block text-gray-700 font-medium mb-2">Produkt(er)*</label>
-                <input type="text" name="Produkter" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
-            </div>
-            <div>
-                <label class="block text-gray-700 font-medium mb-2">Namn*</label>
-                <input type="text" name="customer_name" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
-            </div>
-            <div>
-                <label class="block text-gray-700 font-medium mb-2">Adress*</label>
-                <textarea name="address" rows="3" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 resize-none"></textarea>
-            </div>
-            <!-- Nya fält -->
-            <div>
-                <label class="block text-gray-700 font-medium mb-2">Vad vill du ha levererat till?*</label>
-                <select name="delivery_option" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
-                    <option value="">Välj alternativ</option>
-                    <option value="hem">Hem</option>
-                    <option value="targenia">Låda hos Targenia</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-gray-700 font-medium mb-2">Vänligen knappa in ditt Targenia-konto*</label>
-                <input type="text" name="targenia_account" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
-            </div>
-<div>
-                <label class="block text-gray-700 font-medium mb-2">Hur många stacks av varje item*</label>
-                <input type="text" name="Stacks" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
-            </div>
-<div>
-                <label class="block text-gray-700 font-medium mb-2">Här kan du skriva in extra produkter som inte finns i vårat sortument *Notera dock att priset inte står färdigt och kan bli vad som helst* *</label>
-                <input type="text" name="Extra Produkter" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2">
-            </div>
-            <p class="text-gray-600 text-sm mt-2">
-                Genom hemleverans så lägger vi på 15% av den totala summan på priset. För låda hos Targenia så lägger vi på 10% av den totala summan på priset.
-            </p>
-            <button type="submit" class="w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">
-                Skicka Beställning
-            </button>
-        </form>
+
+        <!-- Google Forms Embed -->
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd7jAOuaS0Bu-5Qm5KYaN8teUNN4jyC5fwNCZqq52qB7la3yQ/viewform?embedded=true" 
+                width="100%" height="1701" frameborder="0" marginheight="0" marginwidth="0">
+            Läser in …
+        </iframe>
     </div>
 </div>
+
 
 
 <script>
